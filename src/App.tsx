@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import content from "./content.json";
+import { posts, type Post } from "./posts";
 
 interface Item {
   title: string;
@@ -18,6 +19,20 @@ interface Content {
 }
 
 const site: Content = content;
+
+/** content.json sections, with posts appended to the section they name. */
+const sections = (() => {
+  const result = site.sections.map((s) => ({ ...s, items: [...s.items] }));
+  for (const post of posts) {
+    let section = result.find((s) => s.title === post.section);
+    if (!section) {
+      section = { title: post.section, items: [] };
+      result.push(section);
+    }
+    section.items.push({ title: post.title, url: `/writing/${post.slug}` });
+  }
+  return result;
+})();
 
 /** Relative links (/resume.pdf) stay in the tab; external ones open a new tab. */
 const ItemLink: React.FC<{ url: string; children: React.ReactNode }> = ({ url, children }) =>
@@ -48,7 +63,30 @@ function renderInline(text: string): React.ReactNode[] {
   return parts;
 }
 
-export default function App() {
+/** Blank-line separated paragraphs; lines starting with "> " become quotes. */
+function renderBody(body: string): React.ReactNode[] {
+  return body
+    .trim()
+    .split(/\n\s*\n/)
+    .map((block, i) =>
+      block.startsWith("> ") ? (
+        <blockquote key={i}>{renderInline(block.replace(/^> ?/gm, ""))}</blockquote>
+      ) : (
+        <p key={i}>{renderInline(block)}</p>
+      ),
+    );
+}
+
+function formatDate(date: string): string {
+  if (!date) return "";
+  return new Date(`${date}T00:00:00`).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+function Header({ linkHome }: { linkHome: boolean }) {
   const [dark, setDark] = useState(() => document.documentElement.dataset.theme === "dark");
 
   function toggleTheme() {
@@ -63,22 +101,28 @@ export default function App() {
   }
 
   return (
+    <header>
+      <h1>{linkHome ? <a href="/" className="home">{site.name}</a> : site.name}</h1>
+      <button
+        type="button"
+        className="toggle"
+        onClick={toggleTheme}
+        aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+      />
+    </header>
+  );
+}
+
+function Home() {
+  return (
     <main>
-      <header>
-        <h1>{site.name}</h1>
-        <button
-          type="button"
-          className="toggle"
-          onClick={toggleTheme}
-          aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-        />
-      </header>
+      <Header linkHome={false} />
 
       {site.intro.map((para, i) => (
         <p key={i}>{renderInline(para)}</p>
       ))}
 
-      {site.sections
+      {sections
         .filter((s) => s.items.length > 0)
         .map((section) => (
           <section key={section.title}>
@@ -95,4 +139,38 @@ export default function App() {
         ))}
     </main>
   );
+}
+
+function PostPage({ post }: { post: Post }) {
+  useEffect(() => {
+    document.title = `${post.title} · ${site.name}`;
+  }, [post]);
+
+  return (
+    <main>
+      <Header linkHome />
+      <article>
+        <h2 className="post-title">{post.title}</h2>
+        {post.date && <p className="post-date">{formatDate(post.date)}</p>}
+        {renderBody(post.body)}
+      </article>
+    </main>
+  );
+}
+
+function NotFound() {
+  return (
+    <main>
+      <Header linkHome />
+      <p>Page not found.</p>
+    </main>
+  );
+}
+
+export default function App() {
+  const path = window.location.pathname.replace(/\/+$/, "") || "/";
+  if (path === "/") return <Home />;
+  const slug = path.match(/^\/writing\/([^/]+)$/)?.[1];
+  const post = slug && posts.find((p) => p.slug === slug);
+  return post ? <PostPage post={post} /> : <NotFound />;
 }

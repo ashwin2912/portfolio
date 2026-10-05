@@ -10,6 +10,21 @@ All content lives in `src/content.json`:
 - `sections`: each has a `title` and `items`. An item is `{ "title", "url"?, "note"? }`;
   `note` renders in parentheses after the title. Empty sections are hidden.
 
+Essays and short posts are Markdown files in `src/posts/`; each appears at
+`/writing/<filename>` and is listed under its `section` on the homepage:
+
+```md
+---
+title: My post
+section: Short posts
+date: 2026-10-05
+---
+
+Paragraphs separated by blank lines. [Links](https://example.com) work.
+
+> Lines starting with "> " render as a quote.
+```
+
 Static files (e.g. `resume.pdf`) go in `public/` and are linked as `/resume.pdf`.
 
 ## Develop

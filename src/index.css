@@ -98,3 +98,24 @@ a:hover {
 :root[data-theme="dark"] .toggle::after {
   left: calc(100% - 1.25rem);
 }
+
+a.home {
+  text-decoration: none;
+}
+
+.post-title {
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+}
+
+.post-date {
+  opacity: 0.6;
+  font-size: 0.95rem;
+}
+
+blockquote {
+  margin: 0 0 1.25rem;
+  padding-left: 1rem;
+  border-left: 2px solid currentColor;
+  font-style: italic;
+}
