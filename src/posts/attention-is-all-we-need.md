@@ -1,7 +1,7 @@
 ---
 title: Attention is all we need
 section: Essays
-date: 2026-10-05
+date: 2025-08-04
 ---
 
 When was the last time you made a stand for something YOU believe in?
