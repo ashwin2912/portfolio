@@ -1,0 +1,62 @@
+{
+  "name": "Ashwin Dhanasamy",
+  "intro": [
+    "Ashwin Dhanasamy is co-founder of [Vybd](https://vybd.ai), building agentic operations systems that sit on top of the tools a company already runs. Agents reconcile data and propose actions, a deterministic compute layer sits underneath, and humans approve what ships.",
+    "He also runs JustLabs, the parent venture studio. His career has been spent building products from 0 to 1, owning engineering end to end and leading designers and PMs."
+  ],
+  "sections": [
+    {
+      "title": "Achievements",
+      "items": [
+        {
+          "title": "Bayangrom operations system",
+          "url": "https://vybd.ai",
+          "note": "cut excess inventory 28% and shipping cost 22%, ~$180k/yr recovered"
+        },
+        {
+          "title": "Vybd agent platform",
+          "url": "https://vybd.ai",
+          "note": "multi-tenant agent orchestrator, V3, 309 tests"
+        }
+      ]
+    },
+    {
+      "title": "Resume",
+      "items": [
+        {
+          "title": "Co-founder, Vybd (formerly BulkMagic)",
+          "note": "agentic operations systems"
+        },
+        {
+          "title": "Engineer, NDS Eco Motors",
+          "note": "multi-environment Kubernetes, ML training pipelines"
+        },
+        {
+          "title": "Product and engineering consultant",
+          "note": "tennis analytics, education, virtual therapy, marine AI"
+        },
+        {
+          "title": "LinkedIn",
+          "url": "https://www.linkedin.com/in/ashwindhanasamy/"
+        }
+      ]
+    },
+    {
+      "title": "Essays",
+      "items": []
+    },
+    {
+      "title": "Short posts",
+      "items": []
+    },
+    {
+      "title": "Elsewhere",
+      "items": [
+        {
+          "title": "GitHub",
+          "url": "https://github.com/ashwin2912"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ashwin Dhanasamy</title>
+    <meta name="description" content="Ashwin Dhanasamy: achievements, resume, and writing." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // Set the theme before first paint so there is no light/dark flash.
+      (function () {
+        var theme;
+        try { theme = localStorage.getItem("theme"); } catch (e) {}
+        if (!theme) theme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
