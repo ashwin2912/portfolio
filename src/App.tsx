@@ -24,6 +24,7 @@ const site: Content = content;
 const sections = (() => {
   const result = site.sections.map((s) => ({ ...s, items: [...s.items] }));
   for (const post of posts) {
+    if (post.section === "none") continue;
     let section = result.find((s) => s.title === post.section);
     if (!section) {
       section = { title: post.section, items: [] };
@@ -35,7 +36,10 @@ const sections = (() => {
 })();
 
 /** Relative links (/resume.pdf) stay in the tab; external ones open a new tab. */
-const ItemLink: React.FC<{ url: string; children: React.ReactNode }> = ({ url, children }) =>
+const ItemLink: React.FC<{ url: string; children: React.ReactNode }> = ({
+  url,
+  children,
+}) =>
   url.startsWith("/") ? (
     <a href={url}>{children}</a>
   ) : (
@@ -63,18 +67,69 @@ function renderInline(text: string): React.ReactNode[] {
   return parts;
 }
 
-/** Blank-line separated paragraphs; lines starting with "> " become quotes. */
-function renderBody(body: string): React.ReactNode[] {
-  return body
-    .trim()
-    .split(/\n\s*\n/)
-    .map((block, i) =>
-      block.startsWith("> ") ? (
-        <blockquote key={i}>{renderInline(block.replace(/^> ?/gm, ""))}</blockquote>
-      ) : (
-        <p key={i}>{renderInline(block)}</p>
-      ),
+/** Posts with section "none": listed on their own after every section. */
+const loosePosts = posts.filter((p) => p.section === "none");
+
+function headingId(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+/**
+ * Blank-line separated blocks: "## " headings, "> " quotes, "- " and "1. "
+ * lists (one item per line), and plain paragraphs. With `toc`, an index of
+ * the headings goes after the first paragraph.
+ */
+function renderBody(body: string, toc = false): React.ReactNode[] {
+  const blocks = body.trim().split(/\n\s*\n/);
+  const nodes = blocks.map((block, i) => {
+    if (block.startsWith("## ")) {
+      const text = block.slice(3);
+      return (
+        <h3 key={i} id={headingId(text)}>
+          {renderInline(text)}
+        </h3>
+      );
+    }
+    if (block.startsWith("> "))
+      return (
+        <blockquote key={i}>
+          {renderInline(block.replace(/^> ?/gm, ""))}
+        </blockquote>
+      );
+    const ordered = /^\d+\. /.test(block);
+    if (ordered || block.startsWith("- ")) {
+      const items = block
+        .split("\n")
+        .map((line, j) => (
+          <li key={j}>{renderInline(line.replace(/^(-|\d+\.) /, ""))}</li>
+        ));
+      return ordered ? <ol key={i}>{items}</ol> : <ul key={i}>{items}</ul>;
+    }
+    return <p key={i}>{renderInline(block)}</p>;
+  });
+
+  const headings = blocks
+    .filter((b) => b.startsWith("## "))
+    .map((b) => b.slice(3));
+  if (toc && headings.length > 0) {
+    nodes.splice(
+      1,
+      0,
+      <nav key="toc" className="toc" aria-label="Contents">
+        <ol>
+          {headings.map((h) => (
+            <li key={h}>
+              <a href={`#${headingId(h)}`}>{h}</a>
+            </li>
+          ))}
+        </ol>
+      </nav>,
     );
+  }
+  return nodes;
 }
 
 function formatDate(date: string): string {
@@ -87,7 +142,9 @@ function formatDate(date: string): string {
 }
 
 function Header({ linkHome }: { linkHome: boolean }) {
-  const [dark, setDark] = useState(() => document.documentElement.dataset.theme === "dark");
+  const [dark, setDark] = useState(
+    () => document.documentElement.dataset.theme === "dark",
+  );
 
   function toggleTheme() {
     const next = dark ? "light" : "dark";
@@ -102,7 +159,15 @@ function Header({ linkHome }: { linkHome: boolean }) {
 
   return (
     <header>
-      <h1>{linkHome ? <a href="/" className="home">{site.name}</a> : site.name}</h1>
+      <h1>
+        {linkHome ? (
+          <a href="/" className="home">
+            {site.name}
+          </a>
+        ) : (
+          site.name
+        )}
+      </h1>
       <button
         type="button"
         className="toggle"
@@ -130,13 +195,23 @@ function Home() {
             <ul>
               {section.items.map((item) => (
                 <li key={item.title}>
-                  {item.url ? <ItemLink url={item.url}>{item.title}</ItemLink> : item.title}
+                  {item.url ? (
+                    <ItemLink url={item.url}>{item.title}</ItemLink>
+                  ) : (
+                    item.title
+                  )}
                   {item.note && <> ({item.note})</>}
                 </li>
               ))}
             </ul>
           </section>
         ))}
+
+      {loosePosts.map((post) => (
+        <p key={post.slug} className="loose-post">
+          <a href={`/writing/${post.slug}`}>{post.title}</a>
+        </p>
+      ))}
     </main>
   );
 }
@@ -151,8 +226,9 @@ function PostPage({ post }: { post: Post }) {
       <Header linkHome />
       <article>
         <h2 className="post-title">{post.title}</h2>
+        {post.ai && <p className="post-flag">Written with AI</p>}
         {post.date && <p className="post-date">{formatDate(post.date)}</p>}
-        {renderBody(post.body)}
+        {renderBody(post.body, post.toc)}
       </article>
     </main>
   );

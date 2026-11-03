@@ -113,6 +113,49 @@ a.home {
   font-size: 0.95rem;
 }
 
+.post-flag {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  padding: 0 0.6rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+article h3 {
+  margin: 2rem 0 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.toc {
+  margin: 0 0 1.5rem;
+  font-size: 0.95rem;
+}
+
+.toc ol {
+  margin: 0;
+}
+
+.loose-post {
+  margin-top: 2rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+article h3 {
+  scroll-margin-top: 1rem;
+}
+
+article ul,
+article ol {
+  margin: 0 0 1.25rem;
+  padding-left: 1.25rem;
+}
+
 blockquote {
   margin: 0 0 1.25rem;
   padding-left: 1rem;
