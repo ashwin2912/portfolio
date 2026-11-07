@@ -35,12 +35,12 @@ const sections = (() => {
   return result;
 })();
 
-/** Relative links (/resume.pdf) stay in the tab; external ones open a new tab. */
+/** Relative (/resume.pdf) and in-page (#section) links stay in the tab; external ones open a new tab. */
 const ItemLink: React.FC<{ url: string; children: React.ReactNode }> = ({
   url,
   children,
 }) =>
-  url.startsWith("/") ? (
+  url.startsWith("/") || url.startsWith("#") ? (
     <a href={url}>{children}</a>
   ) : (
     <a href={url} target="_blank" rel="noopener noreferrer">
