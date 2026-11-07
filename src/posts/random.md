@@ -1,16 +1,15 @@
 ---
 title: Random?
 section: none
-date: 2026-10-31
-ai: true
 ---
 
-1. Economics
-2. Quantum physics
-3. Outside context
-4. Sports
-5. [my_quots](#my-quots)
-6. [Random?](#random)
+1. Math
+2. Economics
+3. Quantum physics
+4. Outside context
+5. Sports
+6. [my_quots](#my-quots)
+7. [Random?](#random)
 
 ## my_quots
 
