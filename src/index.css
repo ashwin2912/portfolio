@@ -1,24 +1,41 @@
+/*
+ * Outside Context design system: paper and ink, EB Garamond, square
+ * corners, one deep green accent. Light is the system's Paper theme; dark
+ * swaps its neutral Night for a green-black ground.
+ */
 :root {
-  --bg: #faf9f5;
-  --fg: #1f1e1d;
+  --bg: #f4f1ea;
+  --panel: #e9e4d8;
+  --fg: #111111;
+  --muted: #5e5b55;
+  --rule: #d3cdbf;
+  --green: #1f4d3a;
 }
 
 :root[data-theme="dark"] {
-  --bg: #1f1e1d;
-  --fg: #f0eee6;
+  --bg: #0c1510;
+  --panel: #14201a;
+  --fg: #f4f1ea;
+  --muted: #a3aba2;
+  --rule: #26332b;
+  --green: #7db295;
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font-family: "Newsreader", Georgia, serif;
-  font-size: 1.1rem;
-  line-height: 1.75;
+  font-family: "EB Garamond", Garamond, "Times New Roman", serif;
+  font-size: 1.2rem;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.2s, color 0.2s;
 }
@@ -36,16 +53,29 @@ header {
   margin-bottom: 2rem;
 }
 
+/* Never bold: headings use Medium at most. */
 h1 {
   margin: 0;
-  font-size: 1.6rem;
-  font-weight: 600;
+  font-size: 1.75rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 h2 {
   margin: 2rem 0 0.75rem;
-  font-size: 1.3rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* Homepage section titles in the system's eyebrow style. */
+section > h2 {
+  margin: 2.5rem 0 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 p {
@@ -63,75 +93,85 @@ li + li {
 
 a {
   color: inherit;
-  text-underline-offset: 2px;
+  text-decoration-color: var(--green);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
 a:hover {
-  opacity: 0.7;
-}
-
-.toggle {
-  position: relative;
-  width: 3rem;
-  height: 1.75rem;
-  padding: 0;
-  border: 2px solid currentColor;
-  border-radius: 999px;
-  background: none;
-  color: inherit;
-  cursor: pointer;
-}
-
-.toggle::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0.25rem;
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-  background: currentColor;
-  transform: translateY(-50%);
-  transition: left 0.2s;
-}
-
-:root[data-theme="dark"] .toggle::after {
-  left: calc(100% - 1.25rem);
+  text-decoration-thickness: 2px;
 }
 
 a.home {
   text-decoration: none;
 }
 
+/* Theme toggle: a hairline frame with the green dot. */
+.toggle {
+  position: relative;
+  width: 3rem;
+  height: 1.6rem;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.toggle:hover {
+  border-color: var(--green);
+}
+
+.toggle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0.3rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  background: var(--green);
+  transform: translateY(-50%);
+  transition: left 0.2s;
+}
+
+:root[data-theme="dark"] .toggle::after {
+  left: calc(100% - 1.1rem);
+}
+
 .post-title {
   margin-top: 0;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
 }
 
 .post-date {
-  opacity: 0.6;
-  font-size: 0.95rem;
+  color: var(--muted);
+  font-size: 1rem;
 }
 
 .post-flag {
   display: inline-block;
   margin-bottom: 0.5rem;
-  padding: 0 0.6rem;
-  border: 1px solid currentColor;
-  border-radius: 999px;
+  padding: 0 0.5rem;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--muted);
   font-size: 0.85rem;
-  opacity: 0.7;
 }
 
 article h3 {
   margin: 2rem 0 0.5rem;
-  font-size: 1.15rem;
-  font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 500;
+  scroll-margin-top: 1rem;
 }
 
 .toc {
   margin: 0 0 1.5rem;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
 
 .toc ol {
@@ -140,14 +180,6 @@ article h3 {
 
 .loose-post {
   margin-top: 2rem;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-article h3 {
-  scroll-margin-top: 1rem;
 }
 
 article ul,
@@ -159,6 +191,109 @@ article ol {
 blockquote {
   margin: 0 0 1.25rem;
   padding-left: 1rem;
-  border-left: 2px solid currentColor;
+  border-left: 1px solid var(--rule);
   font-style: italic;
+}
+
+/* Sign-up card (src/SignupPrompt.tsx) */
+.signup {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 10;
+  width: min(22rem, calc(100vw - 2rem));
+  padding: 1rem 1.1rem 0.9rem;
+  background: var(--panel);
+  color: var(--fg);
+  border: 1px solid var(--rule);
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.signup-title {
+  margin: 0 1.5rem 0.75rem 0;
+  font-weight: 500;
+}
+
+.signup-close {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.6rem;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.signup-roles,
+.signup form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.signup button:not(.signup-close),
+.signup input:not([type="checkbox"]),
+.signup textarea {
+  font: inherit;
+  color: inherit;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 0.4rem 0.6rem;
+}
+
+.signup button:not(.signup-close) {
+  cursor: pointer;
+  text-align: left;
+}
+
+.signup button:not(.signup-close):hover {
+  border-color: var(--green);
+}
+
+.signup button[type="submit"] {
+  text-align: center;
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--bg);
+}
+
+.signup button[type="submit"]:hover {
+  opacity: 0.9;
+}
+
+.signup input[type="checkbox"] {
+  accent-color: var(--green);
+}
+
+.signup textarea {
+  resize: vertical;
+}
+
+.signup-check {
+  font-size: 1rem;
+}
+
+.signup-hp {
+  position: absolute;
+  left: -9999px;
+}
+
+.signup-error {
+  margin: 0;
+  color: #b3261e;
+  font-size: 0.95rem;
+}
+
+:root[data-theme="dark"] .signup-error {
+  color: #f2a29b;
+}
+
+.signup-fine {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
 }

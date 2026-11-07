@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import content from "./content.json";
 import { posts, type Post } from "./posts";
+import SignupPrompt from "./SignupPrompt";
 
 interface Item {
   title: string;
@@ -230,6 +231,7 @@ function PostPage({ post }: { post: Post }) {
         {post.date && <p className="post-date">{formatDate(post.date)}</p>}
         {renderBody(post.body, post.toc)}
       </article>
+      <SignupPrompt slug={post.slug} />
     </main>
   );
 }
