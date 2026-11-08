@@ -1,7 +1,13 @@
 {
   "name": "Ashwin Dhanasamy",
   "intro": [
-    "Ashwin Dhanasamy is the co-founder of [Vybd](https://vybd.ai), where he builds systems for human-AI collaboration and an ecosystem for independent organizations to create economic value together."
+    "Welcome - fellow explorer, to my corner of the digital ocean. This space is my attempt to document and share the knowledge I've gained and communicate my view of this beautiful reality that we all share."
+  ],
+  "pinned": [
+    {
+      "title": "things I try to live by",
+      "url": "/writing/my_quots"
+    }
   ],
   "sections": [
     {

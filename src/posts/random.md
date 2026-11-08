@@ -8,16 +8,8 @@ section: none
 3. Quantum physics
 4. Outside context
 5. Sports
-6. [my_quots](#my-quots)
+6. [my_quots](/writing/my_quots)
 7. [Random?](#random)
-
-## my_quots
-
-The name of this page is a nod to my best friend, not all of these quotes are mine.
-
-1. Life is a long journey.
-2. Brevity is the soul of wit
-3. Production > Consumption
 
 ## Random?
 

@@ -3,7 +3,8 @@
  * (/writing/<slug>). Frontmatter:
  *   title:   required
  *   section: homepage section to list it under (default "Essays"); "none"
- *            lists it on its own at the very end of the homepage
+ *            lists it on its own at the very end of the homepage; "hidden"
+ *            keeps it off the homepage (link to it from content.json)
  *   date:    YYYY-MM-DD, newest listed first
  *   ai:      true to flag the post as written with AI
  *   toc:     true to show a clickable index of "## " headings after the

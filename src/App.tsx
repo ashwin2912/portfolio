@@ -15,6 +15,8 @@ interface Content {
   name: string;
   /** Paragraphs. Supports [label](url) links. */
   intro: string[];
+  /** Links shown right after the intro, before any section. */
+  pinned?: Item[];
   /** Rendered in order; sections with no items are hidden. */
   sections: { title: string; items: Item[] }[];
 }
@@ -25,7 +27,7 @@ const site: Content = content;
 const sections = (() => {
   const result = site.sections.map((s) => ({ ...s, items: [...s.items] }));
   for (const post of posts) {
-    if (post.section === "none") continue;
+    if (post.section === "none" || post.section === "hidden") continue;
     let section = result.find((s) => s.title === post.section);
     if (!section) {
       section = { title: post.section, items: [] };
@@ -186,6 +188,12 @@ function Home() {
 
       {site.intro.map((para, i) => (
         <p key={i}>{renderInline(para)}</p>
+      ))}
+
+      {site.pinned?.map((item) => (
+        <p key={item.title} className="loose-post">
+          <ItemLink url={item.url ?? "#"}>{item.title}</ItemLink>
+        </p>
       ))}
 
       {sections
